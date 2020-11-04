@@ -5,23 +5,22 @@ const url = '';  // MongoDB Atlas Connection URL
 const dbName = 'test'; // Database Name
 
 const countRestaurants = (db, callback) => {
-	var collection = db.collection('restaurants');
-	collection.countDocuments((err,count) => {
+	db.collection('restaurants').countDocuments((err,count) => {
 		assert.equal(null,err);
 		console.log(`There are ${count} documents in the restuarant collection`);
+		callback();
 	})
-	callback();
 }
 
 const client = new MongoClient(url);
 
 client.connect((err) => {
-   assert.equal(null,err);
-   console.log(`Connected successfully to ${url}`);
+	assert.equal(null,err);
+	console.log(`Connected successfully to ${url}`);
 
-   const db = client.db(dbName);
+	const db = client.db(dbName);
 
-   countRestaurants(db, () => {
-	client.close();
-   })
+	countRestaurants(db, () => {
+		client.close();
+	})
 })
